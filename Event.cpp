@@ -32,6 +32,7 @@
 Event::Event(void)
 {
     eventType = EVENT_NONE;
+    eventId = 0;
 }
 
 void Event::update(void)

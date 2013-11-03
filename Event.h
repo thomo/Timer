@@ -29,12 +29,15 @@
 #define EVENT_EVERY 1
 #define EVENT_OSCILLATE 2
 
+  typedef int8_t event_id;
+
 class Event
 {
 
 public:
   Event(void);
   void update(void);
+  event_id eventId;
   int8_t eventType;
   unsigned long period;
   int repeatCount;

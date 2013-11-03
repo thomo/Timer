@@ -30,36 +30,41 @@
 
 #define TIMER_NOT_AN_EVENT (-2)
 #define NO_TIMER_AVAILABLE (-1)
+#define NO_TIMER_ID (0)
+
+#define NO_CONTEXT (void*)0
 
 class Timer
 {
-
+  event_id last_event_id;
+  
 public:
   Timer(void);
 
-  int8_t every(unsigned long period, void (*callback)(void*), void* context);
-  int8_t every(unsigned long period, void (*callback)(void*), int repeatCount, void* context);
-  int8_t after(unsigned long duration, void (*callback)(void*), void* context);
-  int8_t oscillate(uint8_t pin, unsigned long period, uint8_t startingValue);
-  int8_t oscillate(uint8_t pin, unsigned long period, uint8_t startingValue, int repeatCount);
+  event_id every(unsigned long period, void (*callback)(void*), void* context);
+  event_id every(unsigned long period, void (*callback)(void*), int repeatCount, void* context);
+  event_id after(unsigned long duration, void (*callback)(void*), void* context);
+  event_id oscillate(uint8_t pin, unsigned long period, uint8_t startingValue);
+  event_id oscillate(uint8_t pin, unsigned long period, uint8_t startingValue, int repeatCount);
   
   /**
    * This method will generate a pulse of !startingValue, occuring period after the
    * call of this method and lasting for period. The Pin will be left in !startingValue.
    */
-  int8_t pulse(uint8_t pin, unsigned long period, uint8_t startingValue);
+  event_id pulse(uint8_t pin, unsigned long period, uint8_t startingValue);
   
   /**
    * This method will generate a pulse of pulseValue, starting immediately and of
    * length period. The pin will be left in the !pulseValue state
    */
-  int8_t pulseImmediate(uint8_t pin, unsigned long period, uint8_t pulseValue);
-  int8_t stop(int8_t id);
+  event_id pulseImmediate(uint8_t pin, unsigned long period, uint8_t pulseValue);
+  event_id stop(event_id id);
   void update(void);
 
 protected:
   Event _events[MAX_NUMBER_OF_EVENTS];
   int8_t findFreeEventIndex(void);
+  int8_t findTimerIndex(event_id id);
 
 };
 
